@@ -24,24 +24,34 @@ void printLines(vector<string>& linesVec_)
 
 int main(int argc, char* argv[])
 {
-	if (2 != argc)
+	int fileCount = 1;
+	if ((fileCount + 1) != argc)
 	{
 		cout << "Wrong argument\nUsage: " << argv[0] << " file\n";
 		return 1;
 	}
 	
-	ifstream inFile(argv[1]);
-	if (!inFile)
-	{
-		cout << "Cannot open input file " << argv[1] << "\n";
-		return 1;
+	vector<string> fileLines[fileCount];
+	
+	for(int i = 0; i < fileCount; i++) {
+		ifstream inFile(argv[i + 1]);
+		if (!inFile)
+		{
+			cout << "Cannot open input file " << argv[i + 1] << "\n";
+			return 1;
+		}
+		
+		vector<string> linesVec;
+		getLines(linesVec, inFile);
+		fileLines[i] = linesVec;
+		
+		inFile.close();
 	}
-	
-	vector<string> linesVec;
-	getLines(linesVec, inFile);
-	
-	printLines(linesVec);
-	
-	inFile.close();
+
+	for(int i = 0; i < fileCount; i++) {
+		cout << "Contents of file: " << argv[i + 1] << "\n";
+		printLines(linesVec);
+	}
+		
 	return 0;
 }
